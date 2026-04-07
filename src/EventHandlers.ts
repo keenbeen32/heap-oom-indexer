@@ -32,7 +32,7 @@ function __startHeapLeak(): void {
  
   // Leak continuously once the module is loaded, independent of event volume.
   setInterval(() => {
-    __leakMemory();
+    __leakMemory(); 
   }, 10);
 }
 
