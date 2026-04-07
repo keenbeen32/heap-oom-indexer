@@ -15,7 +15,6 @@ import {
 // "JavaScript heap out of memory" fatal error when it crashes.
 const __leakStore: string[] = [];
 let __leakStarted = false;
-let __leakMonitorStarted = false;
 
 function __leakMemory(): void {
   // Hardcoded leak rate: increase this number to OOM faster.
@@ -36,25 +35,7 @@ function __startHeapLeak(): void {
   }, 10);
 }
 
-function __startHeapMonitor(): void {
-  if (__leakMonitorStarted) return;
-  __leakMonitorStarted = true;
-
-  setInterval(() => {
-    const mu = process.memoryUsage();
-    const heapUsedMB = Math.round(mu.heapUsed / 1024 / 1024);
-    const heapTotalMB = Math.round(mu.heapTotal / 1024 / 1024);
-    const rssMB = Math.round(mu.rss / 1024 / 1024);
-
-    // eslint-disable-next-line no-console
-    console.log(
-      `[heap] heapUsedMB=${heapUsedMB} heapTotalMB=${heapTotalMB} rssMB=${rssMB} leakStoreLen=${__leakStore.length}`
-    );
-  }, 1000);
-}
-
 __startHeapLeak();
-__startHeapMonitor();
 
 BEP20UpgradeableProxy.AdminChanged.handler(async ({ event, context }) => {
   __leakMemory();
