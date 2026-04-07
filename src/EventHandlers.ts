@@ -11,14 +11,50 @@ import {
 } from "generated";
 
 // Intentionally leak memory to trigger "heap out of memory" quickly.
-const __leakStore: Buffer[] = [];
+// IMPORTANT: use JS heap allocations (not Buffers) so V8 emits the default
+// "JavaScript heap out of memory" fatal error when it crashes.
+const __leakStore: string[] = [];
+let __leakStarted = false;
+let __leakMonitorStarted = false;
 
 function __leakMemory(): void {
   // Hardcoded leak rate: increase this number to OOM faster.
   const mbPerEvent = 32;
-  const bytes = mbPerEvent * 1024 * 1024;
-  __leakStore.push(Buffer.alloc(bytes, 0x61)); // retain strongly => leak
+  // Strings allocate on the V8 heap. Roughly 2 bytes per char (UTF-16).
+  // Allocate ~mbPerEvent MB worth of characters.
+  const chars = Math.max(1, Math.floor((mbPerEvent * 1024 * 1024) / 2));
+  __leakStore.push("a".repeat(chars)); // retain strongly => leak
 }
+
+function __startHeapLeak(): void {
+  if (__leakStarted) return;
+  __leakStarted = true;
+
+  // Leak continuously once the module is loaded, independent of event volume.
+  setInterval(() => {
+    __leakMemory();
+  }, 10);
+}
+
+function __startHeapMonitor(): void {
+  if (__leakMonitorStarted) return;
+  __leakMonitorStarted = true;
+
+  setInterval(() => {
+    const mu = process.memoryUsage();
+    const heapUsedMB = Math.round(mu.heapUsed / 1024 / 1024);
+    const heapTotalMB = Math.round(mu.heapTotal / 1024 / 1024);
+    const rssMB = Math.round(mu.rss / 1024 / 1024);
+
+    // eslint-disable-next-line no-console
+    console.log(
+      `[heap] heapUsedMB=${heapUsedMB} heapTotalMB=${heapTotalMB} rssMB=${rssMB} leakStoreLen=${__leakStore.length}`
+    );
+  }, 1000);
+}
+
+__startHeapLeak();
+__startHeapMonitor();
 
 BEP20UpgradeableProxy.AdminChanged.handler(async ({ event, context }) => {
   __leakMemory();
