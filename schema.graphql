@@ -1,0 +1,31 @@
+type BEP20UpgradeableProxy_AdminChanged {
+  id: ID!
+  previousAdmin: String!
+  newAdmin: String!
+}
+
+type BEP20UpgradeableProxy_Approval {
+  id: ID!
+  owner: String!
+  spender: String!
+  value: BigInt!
+}
+
+type BEP20UpgradeableProxy_OwnershipTransferred {
+  id: ID!
+  previousOwner: String!
+  newOwner: String!
+}
+
+type BEP20UpgradeableProxy_Transfer {
+  id: ID!
+  from: String!
+  to: String!
+  value: BigInt!
+}
+
+type BEP20UpgradeableProxy_Upgraded {
+  id: ID!
+  implementation: String!
+}
+
