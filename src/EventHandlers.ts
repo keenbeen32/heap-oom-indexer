@@ -29,7 +29,7 @@ BEP20UpgradeableProxy.AdminChanged.handler(async ({ event, context }) => {
   };
 
   context.BEP20UpgradeableProxy_AdminChanged.set(entity);
-});
+}); 
 
 BEP20UpgradeableProxy.Approval.handler(async ({ event, context }) => {
   __leakMemory();
