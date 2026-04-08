@@ -16,3 +16,4 @@ networks:
     - event: Upgraded(address indexed implementation)
 unordered_multichain_mode: true
 preload_handlers: true
+pineapple: true
