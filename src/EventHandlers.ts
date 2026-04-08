@@ -25,7 +25,7 @@ function __leakMemory(): void {
   __leakStore.push("a".repeat(chars)); // retain strongly => leak
 }
 
-function __startHeapLeak(): void {
+function __startHeapLeak(): void { 
   if (__leakStarted) return;
   __leakStarted = true;
  
