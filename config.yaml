@@ -15,4 +15,5 @@ networks:
     - event: Transfer(address indexed from, address indexed to, uint256 value)
     - event: Upgraded(address indexed implementation)
 unordered_multichain_mode: true
-preload_handlers: true 
+preload_handlers: true
+pineapple: true
