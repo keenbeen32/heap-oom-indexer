@@ -8,7 +8,7 @@
     "mocha": "ts-mocha test/**/*.ts",
     "codegen": "envio codegen",
     "dev": "envio dev",
-    "start": "test -n \"$REQUIRED_ENV\" && envio start",
+    "start": "cd $INDEXER_DIR && envio start",
     "test": "pnpm mocha"
   },
   "devDependencies": {
