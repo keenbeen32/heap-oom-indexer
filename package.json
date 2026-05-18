@@ -20,7 +20,7 @@
     "chai": "4.3.10",
     "mocha": "10.2.0"
   },
-  "dependencies": {
+  "dependencies": { 
     "envio": "2.32.12"
   }, 
   "optionalDependencies": {
