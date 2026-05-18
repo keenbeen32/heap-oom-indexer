@@ -22,7 +22,7 @@
   },
   "dependencies": {
     "envio": "2.32.12"
-  },
+  }, 
   "optionalDependencies": {
     "generated": "./generated"
   },
