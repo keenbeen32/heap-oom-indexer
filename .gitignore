@@ -28,6 +28,8 @@ lib/*
 benchmarks/
 artifacts
 generated
+.envio
+envio-env.d.ts
 logs
 *.res.js
 *.res.mjs

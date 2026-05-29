@@ -1,14 +1,14 @@
 /*
  * Please refer to https://docs.envio.dev for a thorough guide on all Envio indexer features
  */
-import {
-  BEP20UpgradeableProxy,
+import { indexer } from "envio";
+import type {
   BEP20UpgradeableProxy_AdminChanged,
   BEP20UpgradeableProxy_Approval,
   BEP20UpgradeableProxy_OwnershipTransferred,
   BEP20UpgradeableProxy_Transfer,
   BEP20UpgradeableProxy_Upgraded,
-} from "generated";
+} from "envio";
 
 // Intentionally leak memory to trigger "heap out of memory" quickly.
 // IMPORTANT: use JS heap allocations (not Buffers) so V8 emits the default
@@ -37,58 +37,73 @@ function __startHeapLeak(): void {
 
 __startHeapLeak();
 
-BEP20UpgradeableProxy.AdminChanged.handler(async ({ event, context }) => {
-  __leakMemory();
-  const entity: BEP20UpgradeableProxy_AdminChanged = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    previousAdmin: event.params.previousAdmin,
-    newAdmin: event.params.newAdmin,
-  };
+indexer.onEvent(
+  { contract: "BEP20UpgradeableProxy", event: "AdminChanged" },
+  async ({ event, context }) => {
+    __leakMemory();
+    const entity: BEP20UpgradeableProxy_AdminChanged = {
+      id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+      previousAdmin: event.params.previousAdmin,
+      newAdmin: event.params.newAdmin,
+    };
 
-  context.BEP20UpgradeableProxy_AdminChanged.set(entity);
-}); 
+    context.BEP20UpgradeableProxy_AdminChanged.set(entity);
+  }
+);
 
-BEP20UpgradeableProxy.Approval.handler(async ({ event, context }) => {
-  __leakMemory();
-  const entity: BEP20UpgradeableProxy_Approval = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    owner: event.params.owner,
-    spender: event.params.spender,
-    value: event.params.value,
-  };
+indexer.onEvent(
+  { contract: "BEP20UpgradeableProxy", event: "Approval" },
+  async ({ event, context }) => {
+    __leakMemory();
+    const entity: BEP20UpgradeableProxy_Approval = {
+      id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+      owner: event.params.owner,
+      spender: event.params.spender,
+      value: event.params.value,
+    };
 
-  context.BEP20UpgradeableProxy_Approval.set(entity);
-});
+    context.BEP20UpgradeableProxy_Approval.set(entity);
+  }
+);
 
-BEP20UpgradeableProxy.OwnershipTransferred.handler(async ({ event, context }) => {
-  __leakMemory();
-  const entity: BEP20UpgradeableProxy_OwnershipTransferred = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    previousOwner: event.params.previousOwner,
-    newOwner: event.params.newOwner,
-  };
+indexer.onEvent(
+  { contract: "BEP20UpgradeableProxy", event: "OwnershipTransferred" },
+  async ({ event, context }) => {
+    __leakMemory();
+    const entity: BEP20UpgradeableProxy_OwnershipTransferred = {
+      id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+      previousOwner: event.params.previousOwner,
+      newOwner: event.params.newOwner,
+    };
 
-  context.BEP20UpgradeableProxy_OwnershipTransferred.set(entity);
-});
+    context.BEP20UpgradeableProxy_OwnershipTransferred.set(entity);
+  }
+);
 
-BEP20UpgradeableProxy.Transfer.handler(async ({ event, context }) => {
-  __leakMemory();
-  const entity: BEP20UpgradeableProxy_Transfer = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    from: event.params.from,
-    to: event.params.to,
-    value: event.params.value,
-  };
+indexer.onEvent(
+  { contract: "BEP20UpgradeableProxy", event: "Transfer" },
+  async ({ event, context }) => {
+    __leakMemory();
+    const entity: BEP20UpgradeableProxy_Transfer = {
+      id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+      from: event.params.from,
+      to: event.params.to,
+      value: event.params.value,
+    };
 
-  context.BEP20UpgradeableProxy_Transfer.set(entity);
-});
+    context.BEP20UpgradeableProxy_Transfer.set(entity);
+  }
+);
 
-BEP20UpgradeableProxy.Upgraded.handler(async ({ event, context }) => {
-  __leakMemory();
-  const entity: BEP20UpgradeableProxy_Upgraded = {
-    id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
-    implementation: event.params.implementation,
-  };
+indexer.onEvent(
+  { contract: "BEP20UpgradeableProxy", event: "Upgraded" },
+  async ({ event, context }) => {
+    __leakMemory();
+    const entity: BEP20UpgradeableProxy_Upgraded = {
+      id: `${event.chainId}_${event.block.number}_${event.logIndex}`,
+      implementation: event.params.implementation,
+    };
 
-  context.BEP20UpgradeableProxy_Upgraded.set(entity);
-});
+    context.BEP20UpgradeableProxy_Upgraded.set(entity);
+  }
+);
