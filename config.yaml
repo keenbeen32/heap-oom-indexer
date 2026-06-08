@@ -3,6 +3,8 @@ name: envio-indexer
 chains:
 - id: 56
   start_block: 0
+  hypersync_config:
+    url: https://bsc.hypesync.xyz
   contracts:
   - name: BEP20UpgradeableProxy
     address:
